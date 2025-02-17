@@ -26,7 +26,7 @@ function App() {
       };
 
       pc.ontrack = (event) => {
-        console.log("Track received", event.currentTarget.connectionState);
+        console.log("Track received", event);
         let remoteStream = videoRef.current.srcObject;
         if (!remoteStream) {
           remoteStream = new MediaStream();
