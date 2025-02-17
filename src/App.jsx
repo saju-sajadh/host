@@ -32,15 +32,12 @@ function App() {
           remoteStream = new MediaStream();
           videoRef.current.srcObject = remoteStream;
         }
-        event.streams[0].getTracks().forEach((track) => {
-          remoteStream.addTrack(track);
-          videoRef.current.srcObject = remoteStream;
-        });
-
+        remoteStream.addTrack(event.track);
         videoRef.current
           .play()
           .catch((error) => console.error("Video play failed:", error));
       };
+
 
       await pc.setRemoteDescription(new RTCSessionDescription(offer));
       const answer = await pc.createAnswer();
