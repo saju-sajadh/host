@@ -14,7 +14,22 @@ function App() {
 
     signalingSocket.current.on("offer", async (offer) => {
       const configuration = {
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+        iceServers: [
+          { urls: ["stun:bn-turn2.xirsys.com"] },
+          {
+            username:
+              "qH0zVmSGADgyZs6zsnPgJDI-yyj6DTR4Pi_SFuMrqFcaxThmUvSqfZHo8AhFb54cAAAAAGe0IfBTYWphZGg=",
+            credential: "a069464a-edbd-11ef-a067-0242ac140004",
+            urls: [
+              "turn:bn-turn2.xirsys.com:80?transport=udp",
+              "turn:bn-turn2.xirsys.com:3478?transport=udp",
+              "turn:bn-turn2.xirsys.com:80?transport=tcp",
+              "turn:bn-turn2.xirsys.com:3478?transport=tcp",
+              "turns:bn-turn2.xirsys.com:443?transport=tcp",
+              "turns:bn-turn2.xirsys.com:5349?transport=tcp",
+            ],
+          },
+        ],
       };
       const pc = new RTCPeerConnection(configuration);
       setPeerConnection(pc);
@@ -38,11 +53,10 @@ function App() {
           .catch((error) => console.error("Video play failed:", error));
       };
 
-
       await pc.setRemoteDescription(new RTCSessionDescription(offer));
       const answer = await pc.createAnswer();
       await pc.setLocalDescription(answer);
-      signalingSocket.current.emit("answer", answer); 
+      signalingSocket.current.emit("answer", answer);
     });
 
     signalingSocket.current.on("ice-candidate", async (candidate) => {
